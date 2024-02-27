@@ -1,3 +1,9 @@
+# Table of contents
+
+1. [Task](#Task)
+1. [Solution](#Solution)
+1. [Results](#Results)
+
 # Task
 <details>
 <summary>Full text</summary>
@@ -41,41 +47,30 @@ In a language of your choice, implement a solution that simulates the scenario t
 
 # Solution
 
--
+## Implementation Details
 
+I chose python because it allows for fast prototyping, has helpful default packages(random, matplotlib) and supports both OOP and functional programming.
 
-# Thought Process
-
-I chose python because it allows for fast prototyping and supports both OOP and functional programming.
-
-### Probabilities/Point considerations
-
-##### _Robot performance:_
-Average robot livespan is 30 rounds
-- Worst case: -3.000.000 (-10 * 30 * 10.000)
-- Best case: 300.000 (1 * 30 * 10.000) [5.000 per round]
-- Target: 50.000 [834 per round]
-
-##### _Simulation analysis:_
-Average robots active: 5.000
-Average broken robots per round: 500 (10% of 5.000) [-> -5.000 per round if no repairs]
-
-### Interpretation of constraints
-
-##### Controllers
 
 - The controllers act after all robots have acted on a round
-- Since all controllers are the same, they should all have an even range of robots (and together cover all 10.000 robots)
 
-##### Robots
+- Robots work during their activation rounds, but not during their deactivation round
 
-- The -10 point penalty for unhealthy robots is applied at the end, only after the controllers have done their job (?)
-- If a robot is activated and deactivated in the same round, it still does its workload (but if it breaks down it doesn't generate -10 points since it isn't active anymore)
+- Robot points are awarded at the end of the round, after all controllers have acted
 
+## Point considerations
 
-# Strategy (ies?)
+Average robot livespan is 30 rounds, the average number of active robots is 5.000
+- Average broken robots per round: 500 [-5.000 points per round]
+- Best case: 300.000 (1 * 30 * 10.000) [5.000 points per round]
+- Worst case: -3.000.000 (-10 * 30 * 10.000) [-100.000 points per round]
+- Target: 50.000 [834 points per round]
 
-## Per robot procedure
+Point budget: ~4.000 points per round
+
+> Cost for 111 controllers: 2220 points per round
+
+## [Controller] Per robot procedure
 
 ```py
 if c.read_health(r) == False:
@@ -90,30 +85,15 @@ if c.read_health(r) == False:
 
 	Note: I made this decision with the aim of optimising the number of operations. If the 'fixing' operation was more costly, then both checks would be necessary.
 
-## Robot range distribution
+# Results
 
-### Naive (best)
+The final solution generates on average `161.000` points.
 
-***Each controller evaluates the range of robots in the order of their ids.***
+It uses 111 controllers with the work strategy mentioned above.
+> Each controller has ~90 robots to monitor, which corresponds to the average case (90% healthy robot prob, 100 max robots processed).
 
-Best score: 118.257
+Simulation results | Performance depending on controller count (average over 10 rounds)
+:-----------------:|:-----------------:
+![](Figure_1.png)  | ![](Figure_2.png)
 
-Best performance achieved with 110 - 125 controllers [penalty 2.200 - 2.500 points per round]
-
-### Other ideas
-
-- Naive with reversing order (not implemented, as other ideas)
-
-	***Each controller evaluates the range of robots in the order of their ids. Each round the order changes (ascending/descending)***
-
-- Since the Naive method evaluates the robots in the same
-
-- Should be the same
-
-### Phases
-
-***Each controller evaluates the range of robots in the order of their ids, alternating between even and odd ids depending on the current round.***
-
--
-
-### State monitoring
+The simulation can export collected data about robots as a text file or display it as a graph, with configurable statistics.
