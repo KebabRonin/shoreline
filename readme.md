@@ -62,7 +62,8 @@ I chose python because it allows for fast prototyping, has helpful default packa
 
 Average robot livespan is 30 rounds, the average number of active robots is 5.000
 - Average broken robots per round: 500 [-5.000 points per round]
-- Best case: 300.000 (1 * 30 * 10.000) [5.000 points per round]
+- Best case: 600.000 (1 * 60 * 10.000) [10.000 points per round]
+- Best average case: 300.000 (1 * 30 * 10.000) [5.000 points per round]
 - Worst case: -3.000.000 (-10 * 30 * 10.000) [-100.000 points per round]
 - Target: 50.000 [834 points per round]
 
@@ -84,6 +85,17 @@ if c.read_health(r) == False:
 	Plus, since an inactive robot can't break down, this means at most one 'useless' fix per robot.
 
 	Note: I made this decision with the aim of optimising the number of operations. If the 'fixing' operation was more costly, then both checks would be necessary.
+
+> While running the same strategy with an added `read_active()`, it was able to generate ~50.000 points with 199 controllers
+
+---
+
+The robots are checked in the ascending order of their serial numbers.
+
+Other (unimplemented) checking methods would be a sense reversing traversal or an alternating traversal on 2-5 equal chunks of the robot range.
+
+> The intuition for these other methods would be to try to counteract the fact that robots near the end are checked less. But doing this likely solves nothing, other than changing the 'disadvantaged' robots each round.
+> The second method is additionally based around reducing the number of controllers necessary to cover all robots, but as a consequence, the problem above is more prevolent.
 
 # Results
 

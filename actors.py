@@ -31,7 +31,18 @@ class OutOfOpsException(Exception):
 	pass
 
 
-def naive(c):
+def three_checks(c):
+	fixed = 0
+	try:
+		for r in c.robots:
+			if c.read_active(r) == True and c.read_health(r) == False:
+				c.fix(r)
+				fixed += 1
+	except OutOfOpsException:
+		pass
+	return fixed
+
+def two_checks(c):
 	fixed = 0
 	try:
 		for r in c.robots:
@@ -43,8 +54,10 @@ def naive(c):
 	return fixed
 
 
+DEFAULT_CONTROLLER_STRATEGY = two_checks
+
 class Controller:
-	def __init__(self, identifier, robots: list[Robot], strategy=naive):
+	def __init__(self, identifier, robots: list[Robot], strategy=DEFAULT_CONTROLLER_STRATEGY):
 		"""Models a Controller with a capacity of 100 operations per round who monitors a list of `Robots`
 
 		Args:
@@ -59,7 +72,7 @@ class Controller:
 			Defaults to `naive`
 		"""
 		if strategy is None:
-			strategy = naive
+			strategy = DEFAULT_CONTROLLER_STRATEGY
 		if not callable(strategy):
 			raise ValueError("Parameter strategy is not callable")
 		self.ident = identifier
