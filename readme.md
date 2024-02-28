@@ -49,7 +49,7 @@ In a language of your choice, implement a solution that simulates the scenario t
 
 ## Implementation Details
 
-I chose python because it allows for fast prototyping, has helpful default packages(random, matplotlib) and supports both OOP and functional programming.
+I chose python because it allows for fast prototyping, has helpful packages(random, matplotlib) and supports both OOP and functional programming.
 
 
 - The controllers act after all robots have acted on a round
@@ -92,9 +92,10 @@ if c.read_health(r) == False:
 
 The robots are checked in the ascending order of their serial numbers.
 
-Other (unimplemented) checking methods would be a sense reversing traversal or an alternating traversal on 2-5 equal chunks of the robot range.
-
+> Other (unimplemented) checking methods would be a sense reversing traversal or an alternating traversal on 2-5 equal chunks of the robot range.
+>
 > The intuition for these other methods would be to try to counteract the fact that robots near the end are checked less. But doing this likely solves nothing, other than changing the 'disadvantaged' robots each round.
+>
 > The second method is additionally based around reducing the number of controllers necessary to cover all robots, but as a consequence, the problem above is more prevolent.
 
 # Results
@@ -104,7 +105,7 @@ The final solution generates on average `161.000` points.
 It uses 111 controllers with the work strategy mentioned above.
 > Each controller has ~90 robots to monitor, which corresponds to the average case (90% healthy robot prob, 100 max robots processed).
 
-Simulation results | Performance depending on controller count (average over 10 rounds)
+Simulation results | Performance depending on controller count (average over 10 runs)
 :-----------------:|:-----------------:
 ![](Figure_1.png)  | ![](Figure_2.png)
 
