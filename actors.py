@@ -69,7 +69,7 @@ class Controller:
 
 			The function must make use of the `read_health`, `read_active` and `fix` methods
 
-			Defaults to `naive`
+			Defaults to `two_checks`
 		"""
 		if strategy is None:
 			strategy = DEFAULT_CONTROLLER_STRATEGY
